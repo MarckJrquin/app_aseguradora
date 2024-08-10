@@ -3,7 +3,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { getUserProfile, editUserProfile, deleteUser } from '../services/UserService';
-import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { RootStackParamList } from '../navigation/types';
 
@@ -156,7 +156,7 @@ const Profile = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={[localStyles.header, { backgroundColor: styles.colors.background }]}>
                 <Image
                     source={{ uri: 'https://via.placeholder.com/150' }}
@@ -248,7 +248,7 @@ const Profile = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 

@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation, RouteProp } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../context/ThemeContext';
 import { saveQuote } from '../services/QuoteInsuranceService'; 
+// import { ScrollView } from 'react-native-gesture-handler';
 
 
 type QuoteDetailsScreenRouteProp = RouteProp<RootStackParamList, 'QuoteDetails'>;
@@ -34,7 +35,7 @@ const QuoteDetails = ({ route }: Props) => {
             };
 
             const savedQuote = await saveQuote(quoteData);
-            console.log('Cotización guardada:', savedQuote);
+            console.log('🖨️ Cotización guardada:', savedQuote);
 
             // Aquí podrías mostrar una notificación de éxito, navegar a otra pantalla, etc.
             alert('Cotización guardada exitosamente!');
@@ -46,7 +47,7 @@ const QuoteDetails = ({ route }: Props) => {
     };
 
     return (
-        <View style={localStyles.container}>
+        <ScrollView style={localStyles.container}>
             {/* Resto del código de renderizado */}
             <View style={localStyles.header}>
                 <Text style={[localStyles.quoteId, styles.text]}>ID de Cotización: {quoteId}</Text>
@@ -96,14 +97,14 @@ const QuoteDetails = ({ route }: Props) => {
 
             <Button title="Guardar Cotización" onPress={handleSaveQuote} />
             <Button title="Regresar" onPress={() => navigation.goBack()} />
-        </View>
+        </ScrollView>
     );
 };
 
 const localStyles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        paddingHorizontal: 24,
     },
     header: {
         marginTop: 50,

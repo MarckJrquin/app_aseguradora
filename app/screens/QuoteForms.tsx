@@ -107,7 +107,7 @@ const QuoteForm = () => {
     };
 
     return (
-        <ScrollView style={[styles.container, localStyles.container]}>
+        <ScrollView style={[localStyles.container]}>
             <Text style={[localStyles.title, styles.text]}>Generar Cotización</Text>
             
             <View style={localStyles.formGroup}>
@@ -187,16 +187,18 @@ const QuoteForm = () => {
                     </Picker>
                 </View>
             </View>
-            
-            <Button title="Generar Cotización" onPress={handleSubmit} />
+
+            <View style={localStyles.formGroup}>
+                <Button title="Generar Cotización" onPress={handleSubmit} />
+            </View>
         </ScrollView>
     );
 };
 
 const localStyles = StyleSheet.create({
-    container: {
-        padding: 20,
+    container: {  
         flex: 1,
+        paddingHorizontal: 20,
     },
     title: {
         fontSize: 26,
@@ -232,6 +234,9 @@ const localStyles = StyleSheet.create({
         height: 44,
         width: '100%',
     },
+    button:{
+        marginBottom: 20,
+    }
 });
 
 export default QuoteForm;

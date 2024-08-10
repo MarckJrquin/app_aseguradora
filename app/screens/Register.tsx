@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-
-import { API_URL, useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
-import axios from 'axios';
-
-import CustomAlert from '../components/CustomAlert';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Image, StyleSheet, TouchableOpacity, Platform, ImageBackground, ScrollView, Alert } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { View, Text, TextInput, Button, Image, StyleSheet, TouchableOpacity, Alert, Platform  } from 'react-native';
-
+import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import CustomAlert from '../components/CustomAlert';
 
 const Register = ({ navigation }: any) => {
     const [Username, setUsername] = useState("");
@@ -25,15 +20,26 @@ const Register = ({ navigation }: any) => {
     const { onRegister } = useAuth();
     const { theme, styles } = useTheme();
 
-    const register = async () => {         
+    const validateEmail = (email: string) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    };
+
+    const register = async () => {
         if(!Username || !Email || !FirstName || !LastName || !DateOfBirth || !Password || !ConfirmPassword) {
-            setAlertMessage('Please fill in all fields');
+            setAlertMessage('Por favor, completa todos los campos');
+            setAlertVisible(true);
+            return;
+        }
+
+        if (!validateEmail(Email)) {
+            setAlertMessage('Por favor, introduce un correo electrónico válido');
             setAlertVisible(true);
             return;
         }
     
         if(Password !== ConfirmPassword) {
-            setAlertMessage('Passwords do not match');
+            setAlertMessage('Las contraseñas no coinciden');
             setAlertVisible(true);
             return;
         }
@@ -43,7 +49,6 @@ const Register = ({ navigation }: any) => {
         if (result && result.error) {
             setAlertMessage(result.msg);
             setAlertVisible(true);
-            
         }
     }
 
@@ -53,93 +58,137 @@ const Register = ({ navigation }: any) => {
         setDateOfBirth(currentDate);
     };
 
-
     return (
-        <View style={localStyles.container}>
-            <Image
-                style={localStyles.image}
-                source={{ uri: 'https://galaxies.dev/img/logos/logo--blue.png' }}
-            />
-            <View style={localStyles.form}>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Username'
-                    value={Username}
-                    onChangeText={(text: string) => setUsername(text)}
+        <ImageBackground source={{ uri: 'https://images.pexels.com/photos/804130/pexels-photo-804130.jpeg' }} style={localStyles.background}>
+            <ScrollView contentContainerStyle={localStyles.container}>
+                <Image
+                    style={localStyles.image}
+                    source={require('../../assets/logo.png')}
                 />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Email'
-                    value={Email}
-                    onChangeText={(text: string) => setEmail(text)}
+                <Text style={localStyles.subtitle}>Aseguradora de Autos</Text>
+                <View style={localStyles.form}>
+                    <View style={localStyles.inputContainer}>
+                        <Text style={styles.text}>Nombre de Usuario</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Nombre de usuario'
+                            value={Username}
+                            onChangeText={(text: string) => setUsername(text)}
+                        />
+                    </View>
+                    <View style={localStyles.inputContainer}>
+                        <Text style={styles.text}>Correo Electrónico</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Correo electrónico'
+                            value={Email}
+                            onChangeText={(text: string) => setEmail(text)}
+                            keyboardType="email-address"
+                        />
+                    </View>
+                    <View style={localStyles.inputContainer}>
+                        <Text style={styles.text}>Nombre</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Nombre'
+                            value={FirstName}
+                            onChangeText={(text: string) => setFirstName(text)}
+                        />
+                    </View>
+                    <View style={localStyles.inputContainer}>
+                        <Text style={styles.text}>Apellido</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Apellido'
+                            value={LastName}
+                            onChangeText={(text: string) => setLastName(text)}
+                        />
+                    </View>
+                    <View style={localStyles.inputContainer}>
+                        <Text style={styles.text}>Fecha de Nacimiento</Text>
+                        <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
+                            <Text style={styles.input}>
+                                {DateOfBirth.toDateString()}
+                            </Text>
+                        </TouchableOpacity>
+                        {datePickerOpen && (
+                            <DateTimePicker
+                                value={DateOfBirth}
+                                mode="date"
+                                display="default"
+                                onChange={handleDateChange}
+                            />
+                        )}
+                    </View>
+                    <View style={localStyles.inputContainer}>
+                        <Text style={styles.text}>Contraseña</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Contraseña'
+                            value={Password}
+                            onChangeText={(text: string) => setPassword(text)}
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <View style={localStyles.inputContainer}>
+                        <Text style={styles.text}>Confirmar Contraseña</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Confirmar contraseña'
+                            value={ConfirmPassword}
+                            onChangeText={(text: string) => setConfirmPassword(text)}
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <Button title='Registrarse' onPress={register} />
+                    <Button title='Iniciar sesión' onPress={() => navigation.navigate('Login')} />
+                </View>
+                <CustomAlert
+                    visible={alertVisible}
+                    message={alertMessage}
+                    onClose={() => setAlertVisible(false)}
                 />
-                <TextInput
-                    style={styles.input}
-                    placeholder='First Name'
-                    value={FirstName}
-                    onChangeText={(text: string) => setFirstName(text)}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Last Name'
-                    value={LastName}
-                    onChangeText={(text: string) => setLastName(text)}
-                />
-                <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-                    <Text style={styles.input}>
-                        {DateOfBirth.toDateString()}
-                    </Text>
-                </TouchableOpacity>
-                {datePickerOpen && (
-                    <DateTimePicker
-                        value={DateOfBirth}
-                        mode="date"
-                        display="default"
-                        onChange={handleDateChange}
-                    />
-                )}
-                <TextInput
-                    style={styles.input}
-                    placeholder='Password'
-                    value={Password}
-                    onChangeText={(text: string) => setPassword(text)}
-                    secureTextEntry={true}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Confirm Password'
-                    value={ConfirmPassword}
-                    onChangeText={(text: string) => setConfirmPassword(text)}
-                    secureTextEntry={true}
-                />
-                <Button title='Register' onPress={register} />
-                <Button title='Sign in' onPress={() => navigation.navigate('Login')} />
-            </View>
-            <CustomAlert
-                visible={alertVisible}
-                message={alertMessage}
-                onClose={() => setAlertVisible(false)}
-            />
-        </View>
+            </ScrollView>
+        </ImageBackground>
     );
 };
 
-
 const localStyles = StyleSheet.create({
-    image: {
-        width: '30%',
-        height: '30%',
-        resizeMode: 'contain',
-    },
-    form: {
-        gap: 10,
-        width: '60%',
+    background: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
     },
     container: {
+        flexGrow: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        width: '100%'
-    }
+        paddingHorizontal: 20,
+    },
+    image: {
+        width: 150,
+        height: 150,
+        marginBottom: 10,
+        resizeMode: 'contain',
+    },
+    subtitle: {
+        fontSize: 18,
+        marginBottom: 20,
+        color: '#888',
+    },
+    form: {
+        width: '100%',
+        backgroundColor: 'rgba(255, 255, 255, 0.85)',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5,
+    },
+    inputContainer: {
+        marginBottom: 15,
+        width: '100%',
+    },
 });
-
 
 export default Register;

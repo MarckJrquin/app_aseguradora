@@ -20,7 +20,9 @@ interface AuthProps {
 
 export const TOKEN_KEY = 'my-jwt';
 export const ROLE_KEY = 'my-role';
-export const API_URL = "http://192.168.0.3:5080";
+// Asegurarse de ajustar la URL según sea necesario, colocar la IP de su servidor o computadora
+// export const API_URL = "http://192.168.0.3:5080";
+export const API_URL = "http://ec2-44-211-217-212.compute-1.amazonaws.com:5080";
 const AuthContext = createContext<AuthProps>({});
 
 export const useAuth = () => {
