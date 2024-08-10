@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.marckjrquin.pruebaTecnica"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -38,6 +39,14 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3c90c431-9ac8-4461-a621-99456625d9b8"
+      }
+    }
   }
 }
