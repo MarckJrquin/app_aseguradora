@@ -1,5 +1,4 @@
-// app/context/ThemeContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { LightTheme, AppDarkTheme } from '../theme';
 
 type Theme = 'light' | 'dark';
@@ -12,9 +11,8 @@ interface ThemeContextProps {
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+export const ThemeProvider = ({ children }: any) => {
   const [theme, setTheme] = useState<Theme>('light');
-
   const styles = theme === 'light' ? LightTheme : AppDarkTheme;
 
   return (

@@ -11,13 +11,21 @@ import HomeAdmin from './app/screens/HomeAdmin';
 import Login from './app/screens/Login';
 import Register from './app/screens/Register';
 import Profile from './app/screens/Profile';
+import ChangePassword from './app/screens/ChangePassword';
+import QuoteForm from './app/screens/QuoteForms';
+import QuoteDetails from './app/screens/QuoteDetails';
+import MyInsuranceQuotes from './app/screens/MyInsuranceQuotes';
+import AllInsuranceQuotes from './app/screens/AllInsuranceQuotes';
+import AllUsers from './app/screens/AllUsers';
 
 import { ThemeProvider, useTheme } from './app/context/ThemeContext';
 import { LightTheme, AppDarkTheme  } from './app/theme';
+import { RootStackParamList } from './app/navigation/types';
+
 import { Button, StyleSheet, Text, View } from 'react-native';
 
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -32,21 +40,24 @@ export default function App() {
 
 const UserDrawer = () => (
   <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-    <Drawer.Screen name="Inicio" component={HomeUser} />
-    <Drawer.Screen name="Cotizar" component={HomeUser} />
-    <Drawer.Screen name="Mis Cotizaciones" component={HomeUser} />
-    <Drawer.Screen name="Mi Perfil" component={Profile} />
+    <Drawer.Screen name="Inicio" component={HomeUser} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Cotizar" component={QuoteForm} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Mis Cotizaciones" component={MyInsuranceQuotes} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Mi Perfil" component={Profile} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Cambiar Contraseña" component={ChangePassword} options={{ unmountOnBlur: true }} />
   </Drawer.Navigator>
 );
 
 const AdminDrawer = () => (
   <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-    <Drawer.Screen name="Inicio" component={HomeAdmin} />
-    <Drawer.Screen name="Cotizaciones" component={HomeUser} />
-    <Drawer.Screen name="Usuarios" component={HomeUser} />
-    <Drawer.Screen name="Mi Perfil" component={Profile} />
+    <Drawer.Screen name="Inicio" component={HomeAdmin} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Cotizaciones" component={AllInsuranceQuotes} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Usuarios" component={AllUsers} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Mi Perfil" component={Profile} options={{ unmountOnBlur: true }} />
+    <Drawer.Screen name="Cambiar Contraseña" component={ChangePassword} options={{ unmountOnBlur: true }} />
   </Drawer.Navigator>
 );
+
 
 export const Layout = () => {
   const { authState, onLogout } = useAuth();  
@@ -67,6 +78,7 @@ export const Layout = () => {
             <Stack.Screen name="Register" component={Register} />
           </>
         )}
+        <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

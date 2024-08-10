@@ -18,8 +18,8 @@ interface AuthProps {
     onLogout?: () => Promise<any>;
 }
 
-const ROLE_KEY = "my-role";
-const TOKEN_KEY = "my-jwt";
+export const TOKEN_KEY = 'my-jwt';
+export const ROLE_KEY = 'my-role';
 export const API_URL = "http://192.168.0.3:5080";
 const AuthContext = createContext<AuthProps>({});
 
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: any) => {
     const login = async (username: string, password: string) => {
         try {
             const result = await axios.post(`${API_URL}/api/Auth/signin`, {username, password});
-            console.log("🚀 ~ file: AuthContext.tsx:92 ~ login ~ result: ", result);
+            console.log("🚀 ~ file: AuthContext.tsx:93 ~ login ~ result: ", result);
 
             setAuthState({
                 token: result.data.token,

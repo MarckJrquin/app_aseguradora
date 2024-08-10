@@ -1,16 +1,11 @@
-// app/components/DrawerContent.tsx
 import React from 'react';
-
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-
 import { View, Text, Button, Switch, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 
-
 const DrawerContent = (props: any) => {
   const { onLogout } = useAuth();
-
   const { theme, setTheme, styles } = useTheme();
 
   const toggleTheme = () => {
@@ -22,7 +17,7 @@ const DrawerContent = (props: any) => {
       <View style={localStyles.container}>
         <DrawerItemList {...props} />
         <View style={localStyles.themeToggle}>
-          <Text style={styles.text}>Dark Theme</Text>
+          <Text style={styles.text}>Modo Oscuro</Text>
           <Switch
             value={theme === 'dark'}
             onValueChange={toggleTheme}
